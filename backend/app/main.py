@@ -1,4 +1,4 @@
-"""WaferGuard Production MLOps Backend Application."""
+"""WaferPulse Production MLOps Backend Application."""
 
 from __future__ import annotations
 
@@ -23,21 +23,21 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
-logger = logging.getLogger("waferguard")
+logger = logging.getLogger("waferpulse")
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application startup and shutdown events."""
-    logger.info("Initializing WaferGuard database schemas...")
+    logger.info("Initializing WaferPulse database schemas...")
     init_db()
 
     # Launch background simulated telemetry streamer task
     stream_task = asyncio.create_task(_background_telemetry_broadcaster())
-    logger.info("WaferGuard MLOps platform ready.")
+    logger.info("WaferPulse MLOps platform ready.")
     yield
     stream_task.cancel()
-    logger.info("WaferGuard platform shutting down.")
+    logger.info("WaferPulse platform shutting down.")
 
 
 async def _background_telemetry_broadcaster():
@@ -56,7 +56,7 @@ async def _background_telemetry_broadcaster():
 
 
 app = FastAPI(
-    title="WaferGuard MLOps API",
+    title="WaferPulse MLOps API",
     description="Industrial Predictive Maintenance & Sensor Anomaly Detection for Semiconductor Manufacturing",
     version="1.0.0",
     lifespan=lifespan,
@@ -84,7 +84,7 @@ def health_check():
     """Health status and service availability."""
     return {
         "status": "healthy",
-        "service": "WaferGuard MLOps Platform",
+        "service": "WaferPulse MLOps Platform",
         "version": "1.0.0",
     }
 

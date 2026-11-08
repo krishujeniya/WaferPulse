@@ -4,7 +4,7 @@ PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PYTHON_INTERPRETER = python3
 
 help:
-	@echo "WaferGuard - Cookiecutter MLOps & Data Science Automation:"
+	@echo "WaferPulse - Cookiecutter MLOps & Data Science Automation:"
 	@echo "  make data            Ingest and validate raw sensor batches -> data/interim"
 	@echo "  make features        Extract and scale features -> data/processed"
 	@echo "  make train           Fit chamber K-Means clusters & train ensemble models -> models/"

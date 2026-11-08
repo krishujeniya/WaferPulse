@@ -1,37 +1,30 @@
-# AI Handoff - Production-Ready End-to-End MLOps SaaS
+# AI Handoff - WaferPulse Industrial MLOps Platform
 
 ## Task
-Transformed WaferGuard into a production-ready, Cookiecutter-aligned MLOps SaaS platform with automated CI/CD:
-- Structured repository per Cookiecutter Data Science (`data/`, `src/`, `models/`, `reports/`, `references/`, `notebooks/`).
-- Engineered multi-chamber wafer fault detection pipeline (K-Means clustering + chamber-specific ensembles).
-- Built industrial React 18 dashboard following Emil Kowalski design engineering principles with wafer die heatmaps and live telemetry.
-- Deployed FastAPI backend to Vercel serverless (`https://waferguard.vercel.app`).
-- Deployed React frontend to GitHub Pages (`https://krishujeniya.github.io/WaferGuard/`).
-- Configured automated GitHub Actions workflows for continuous integration (`ci.yml`) and Pages deployment (`deploy-pages.yml`).
+Rebranded and deployed the platform as **WaferPulse** (formerly WaferGuard):
+- Renamed repository to `krishujeniya/WaferPulse` via GitHub CLI.
+- Configured production brand domain on Vercel: `https://waferpulse.vercel.app`.
+- Configured production GitHub Pages URL: `https://krishujeniya.github.io/WaferPulse/`.
+- Generated SVG brand identity, logo mark, and favicon (`frontend/public/logo.svg`, `frontend/public/favicon.svg`, `assets/waferpulse-logo.svg`, `assets/social-card.svg`).
+- Updated all API metadata, schemas, and tests to assert `WaferPulse MLOps Platform`.
+- Maintained Cookiecutter Data Science and MLOps structure and full test ratchet.
 
 ## Branch & Revision
 - Branch: `main`
-- Remote: `https://github.com/krishujeniya/WaferGuard.git`
-- Latest Commit: `c0654c5`
+- Remote: `https://github.com/krishujeniya/WaferPulse.git`
 
 ## Live Deployments & Verification Evidence
-- Frontend URL: `https://krishujeniya.github.io/WaferGuard/` (HTTP/2 200 OK)
-- Backend API URL: `https://waferguard.vercel.app` (HTTP/2 200 OK)
-- Backend Endpoints Verified:
-  - `GET /health`: `{"status":"healthy","service":"WaferGuard MLOps Platform","version":"1.0.0"}`
-  - `GET /api/v1/models`: Production model `v20261108_233353` active with metric cards
-  - `GET /api/v1/monitoring/drift`: PSI and two-sample KS-test drift metrics across 60 channels
-  - `GET /api/v1/monitoring/fab-overview`: Chamber health status, yield rates, and active alarms
-  - `POST /api/v1/predict/single`: Single wafer inference with top-K Z-score anomaly attribution
-- CI/CD Status (all passing via GitHub CLI verification):
-  - `CI` (Run 42511418863): `validate-backend` (Ruff + pytest) and `validate-frontend` passed in 19s
-  - `Deploy Frontend to GitHub Pages` (Run 42511418855): Built and published artifact in 20s
-  - GitHub Pages deployment (ID 7640160605): `state: success`
+- Frontend Dashboard: `https://krishujeniya.github.io/WaferPulse/`
+- Backend API Endpoint: `https://waferpulse.vercel.app`
+- Verification Commands:
+  - `curl -i https://krishujeniya.github.io/WaferPulse/`
+  - `curl -i https://waferpulse.vercel.app/health`
+  - `curl -s https://waferpulse.vercel.app/api/v1/monitoring/fab-overview`
 - Test Ratchet:
-  - 15 passed across `test_api.py`, `test_ml_pipeline.py`, and `test_cookiecutter_pipeline.py`.
+  - 15 passed in pytest (`PYTHONPATH=. pytest tests/ -v`).
   - Ruff lint clean (`ruff check --select E,F --ignore E501 src backend`).
 
 ## Next Authorized Command
 ```bash
-curl -i https://waferguard.vercel.app/health
+curl -i https://waferpulse.vercel.app/health
 ```

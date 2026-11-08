@@ -128,7 +128,7 @@ def run_batch_inference(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="WaferGuard Batch Inference Engine")
+    parser = argparse.ArgumentParser(description="WaferPulse Batch Inference Engine")
     parser.add_argument("input_path", help="Path to input CSV or directory")
     parser.add_argument("--output", default=None, help="Optional destination path for predictions CSV")
     parser.add_argument("--version", default=None, help="Optional model version to load")

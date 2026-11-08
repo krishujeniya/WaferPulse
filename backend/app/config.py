@@ -1,4 +1,4 @@
-"""WaferGuard Application Configuration."""
+"""WaferPulse Application Configuration."""
 
 from __future__ import annotations
 
@@ -10,12 +10,12 @@ MODELS_DIR = BASE_DIR / "models"
 IS_VERCEL = bool(os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"))
 
 if IS_VERCEL:
-    DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:////tmp/waferguard.db")
+    DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:////tmp/waferpulse.db")
     DATA_DIR = Path("/tmp/data")
     REPORTS_DIR = Path("/tmp/reports")
     ARTIFACTS_DIR = Path("/tmp/artifacts")
 else:
-    DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'waferguard.db'}")
+    DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'waferpulse.db'}")
     DATA_DIR = BASE_DIR / "data"
     REPORTS_DIR = BASE_DIR / "reports"
     ARTIFACTS_DIR = BASE_DIR / "artifacts"

@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 setup(
-    name='waferguard',
+    name='waferpulse',
     packages=find_packages(),
     version='1.0.0',
     description='Intelligent Predictive Maintenance & MLOps SaaS for Semiconductor Wafers',

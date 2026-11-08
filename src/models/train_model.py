@@ -139,7 +139,7 @@ def run_training_pipeline(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="WaferGuard MLOps Training Pipeline")
+    parser = argparse.ArgumentParser(description="WaferPulse MLOps Training Pipeline")
     parser.add_argument("--data-dir", default="data/raw", help="Path to raw training batches")
     parser.add_argument("--version", default=None, help="Optional explicit model version name")
     parser.add_argument("--registry-dir", default="models", help="Model registry directory")

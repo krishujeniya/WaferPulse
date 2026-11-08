@@ -1,23 +1,43 @@
-# WaferGuard: Industrial MLOps Platform for Semiconductor Wafer Fault Detection
+# WaferPulse: Industrial MLOps Platform for Semiconductor Wafer Fault Detection
 
-[![CI](https://github.com/krishujeniya/WaferGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/krishujeniya/WaferGuard/actions/workflows/ci.yml)
-[![Deploy Frontend to GitHub Pages](https://github.com/krishujeniya/WaferGuard/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/krishujeniya/WaferGuard/actions/workflows/deploy-pages.yml)
-[![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![React 18](https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=black)](https://react.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+<p align="center">
+  <img src="assets/waferpulse-logo.svg" alt="WaferPulse Logo" width="480" />
+</p>
 
-WaferGuard is an end-to-end MLOps platform engineered for semiconductor manufacturing fabrication plants (fabs). It ingests multi-channel sensor telemetry, validates data contracts against schema definitions, clusters operational chamber regimes using K-Means, trains specialized ensemble classifiers per chamber, detects distribution drift using Kolmogorov-Smirnov tests and Population Stability Index (PSI), and diagnoses wafer defects using Z-score anomaly attribution.
+<p align="center">
+  <a href="https://github.com/krishujeniya/WaferPulse/actions/workflows/ci.yml"><img src="https://github.com/krishujeniya/WaferPulse/actions/workflows/ci.yml/badge.svg" alt="CI Status" /></a>
+  <a href="https://github.com/krishujeniya/WaferPulse/actions/workflows/deploy-pages.yml"><img src="https://github.com/krishujeniya/WaferPulse/actions/workflows/deploy-pages.yml/badge.svg" alt="Pages Deployment" /></a>
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white" alt="Python 3.12" /></a>
+  <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white" alt="FastAPI" /></a>
+  <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=black" alt="React 18" /></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind-3.4-38B2AC?logo=tailwind-css&logoColor=white" alt="Tailwind CSS" /></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT" /></a>
+</p>
+
+WaferPulse is an end-to-end MLOps platform engineered for semiconductor manufacturing fabrication plants (fabs). It ingests multi-channel sensor telemetry, validates data contracts against schema definitions, clusters operational chamber regimes using K-Means, trains specialized ensemble classifiers per chamber, detects distribution drift using Kolmogorov-Smirnov tests and Population Stability Index (PSI), and diagnoses wafer defects using Z-score anomaly attribution.
 
 ---
 
 ## Live Deployments
 
-- **Production Frontend Dashboard**: [https://krishujeniya.github.io/WaferGuard/](https://krishujeniya.github.io/WaferGuard/)
-- **Production Backend API**: [https://waferguard.vercel.app](https://waferguard.vercel.app)
-- **Interactive Swagger Documentation**: [https://waferguard.vercel.app/docs](https://waferguard.vercel.app/docs)
-- **API Health Endpoint**: [https://waferguard.vercel.app/health](https://waferguard.vercel.app/health)
+- **Production Frontend Dashboard**: [https://krishujeniya.github.io/WaferPulse/](https://krishujeniya.github.io/WaferPulse/)
+- **Production Backend API**: [https://waferpulse.vercel.app](https://waferpulse.vercel.app)
+- **Interactive Swagger Documentation**: [https://waferpulse.vercel.app/docs](https://waferpulse.vercel.app/docs)
+- **API Health Endpoint**: [https://waferpulse.vercel.app/health](https://waferpulse.vercel.app/health)
+
+---
+
+## Brand Psychology & Name Derivation
+
+The name **WaferPulse** was constructed through cognitive psychology and psycholinguistic frameworks:
+
+| Principle | Theoretical Foundation | Application to WaferPulse |
+| :--- | :--- | :--- |
+| **Cognitive Processing Fluency** | Alter & Oppenheimer (2009) | Three-syllable trochaic cadence (`Wa-fer-Pulse`). High phonotactic probability enables rapid lexical retrieval and working memory retention with low cognitive load. |
+| **Phonosemantic Contrast (Bouba / Kiki)** | Ramachandran & Hubbard (2001) | Fuses rounded, fluid phonemes (`W`, `f`, `r`) representing the circular silicon substrate with sharp, plosive stops (`P`, `l`, `s`) signaling micro-temporal measurement and high-frequency instrumentation. |
+| **Dual-Coding Theory** | Paivio (1986) | Triggers simultaneous associative retrieval: the physical object schema (the 300mm silicon wafer) and the operational telemetry dynamic (the continuous streaming pulse of fab chambers). |
+| **Schema Congruence & Category Archetyping** | Aaker (1997); Bagozzi et al. (2021) | Eliminates generic defensive stereotypes (such as "Guard", which signals low-complexity consumer software) in favor of active industrial diagnostics aligned with leading semiconductor toolmakers (ASML, Applied Materials, KLA, Lam Research). |
+| **Mayer Credibility Matrix** | Mayer, Davis & Schoorman (1995) | Signals deep engineering competence, process transparency, and instrumentation integrity required by fab process control engineers. |
 
 ---
 
@@ -66,13 +86,16 @@ flowchart TD
 The project follows the Cookiecutter Data Science and Cookiecutter MLOps architectural layout:
 
 ```
-WaferGuard/
+WaferPulse/
 ├── .github/
 │   └── workflows/
 │       ├── ci.yml                 # Ruff linting, test suite ratchet, and frontend build
 │       └── deploy-pages.yml       # Automated GitHub Pages deployment pipeline
 ├── api/
 │   └── index.py                   # Vercel serverless entry point
+├── assets/
+│   ├── waferpulse-logo.svg        # Official brand logo vector
+│   └── social-card.svg            # OpenGraph visual card
 ├── backend/
 │   └── app/
 │       ├── config.py              # Environment configuration and serverless storage path routing
@@ -96,11 +119,14 @@ WaferGuard/
 │   ├── quarantine/                # Schema-rejected batches
 │   └── raw/                       # Raw sensor telemetry CSVs
 ├── frontend/                      # React 18 single-page application
+│   ├── public/
+│   │   ├── favicon.svg            # Silicon disc & pulse favicon
+│   │   └── logo.svg               # Vector brand badge
 │   ├── src/
 │   │   ├── components/            # WaferMap, PipelineVisualizer, MetricCard, Navbar
 │   │   ├── pages/                 # Dashboard, Inference, PipelineLab, ModelRegistry, Monitoring
 │   │   └── services/              # Axios API client configured for production endpoints
-│   ├── vite.config.js             # Vite configuration with GitHub Pages base path
+│   ├── vite.config.js             # Vite configuration with GitHub Pages base path (/WaferPulse/)
 │   └── package.json
 ├── models/
 │   ├── active_model.json          # Active model pointer and promotion audit trail
@@ -111,7 +137,7 @@ WaferGuard/
 ├── references/
 │   └── data_dictionary.md         # Sensor channel engineering definitions
 ├── reports/
-│   └── figures/                   # Wafer die maps and sensor drift visualizations
+│   └── figures/                   # Silicon die heatmaps and drift visualizations
 ├── src/
 │   ├── data/
 │   │   ├── generator.py           # Multi-chamber wafer telemetry generation
@@ -150,10 +176,10 @@ WaferGuard/
 ## Technical Details
 
 ### 1. Multi-Chamber Operational Regime Clustering
-Semiconductor processing tools exhibit distinct physical operating regimes across chemical mechanical planarization (CMP), lithography, and plasma etching. Rather than training a single monolithic model across disparate baselines, WaferGuard runs K-Means clustering with automated silhouette score optimization ($K \in [2, 4]$) to segment wafers into distinct operational clusters before defect classification.
+Semiconductor processing tools exhibit distinct physical operating regimes across chemical mechanical planarization (CMP), lithography, and plasma etching. Rather than training a single monolithic model across disparate baselines, WaferPulse runs K-Means clustering with automated silhouette score optimization ($K \in [2, 4]$) to segment wafers into distinct operational clusters before defect classification.
 
 ### 2. Clustered Ensemble Classifiers
-Wafer failure in high-volume fabs is a rare event (typically 5% to 8% defect rate). WaferGuard pairs each chamber cluster with an isolated ensemble composed of:
+Wafer failure in high-volume fabs is a rare event (typically 5% to 8% defect rate). WaferPulse pairs each chamber cluster with an isolated ensemble composed of:
 - **Balanced Random Forest**: Re-balances bootstrapping to handle extreme class imbalance without synthetic data corruption.
 - **HistGradientBoosting**: Captures non-linear sensor correlations and interaction effects.
 
@@ -167,7 +193,7 @@ $$Z_i = \frac{x_i - \mu_{\text{baseline}, i}}{\sigma_{\text{baseline}, i}}$$
 The top-$K$ deviating channels are surfaced in real time with direction (`HIGH` / `LOW`), absolute Z-score, and severity ratings (`CRITICAL`, `WARNING`, `NOMINAL`), pointing process engineers directly to failing equipment components.
 
 ### 4. Sensor Drift Monitoring
-Sensor distribution shifts indicate chamber contamination, RF generator degradation, or optical wear. WaferGuard computes:
+Sensor distribution shifts indicate chamber contamination, RF generator degradation, or optical wear. WaferPulse computes:
 - **Two-Sample Kolmogorov-Smirnov Test**: Identifies continuous distribution divergence ($p < 0.05$).
 - **Population Stability Index (PSI)**: Quantifies shift severity across 10 quantile bins:
   - $\text{PSI} < 0.10$: Stable
@@ -209,8 +235,8 @@ Sensor distribution shifts indicate chamber contamination, RF generator degradat
 
 ### 1. Repository Setup
 ```bash
-git clone https://github.com/krishujeniya/WaferGuard.git
-cd WaferGuard
+git clone https://github.com/krishujeniya/WaferPulse.git
+cd WaferPulse
 
 python3 -m venv .venv
 source .venv/bin/activate

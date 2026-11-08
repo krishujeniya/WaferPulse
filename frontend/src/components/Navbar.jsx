@@ -16,13 +16,22 @@ export default function Navbar({ activeTab, setActiveTab, activeModel, isConnect
         <div className="flex items-center justify-between h-16">
           {/* Logo and System Title */}
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-lg bg-sky-950 border border-sky-500/30 flex items-center justify-center text-sky-400 shadow-[0_0_15px_rgba(2,132,199,0.25)]">
-              <Cpu className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-lg bg-[#0c1322] border border-cyan-500/30 flex items-center justify-center shadow-[0_0_18px_rgba(6,182,212,0.2)] overflow-hidden">
+              <svg viewBox="0 0 120 120" className="w-8 h-8" fill="none">
+                <circle cx="60" cy="60" r="52" stroke="#0284c7" strokeWidth="3" fill="#080c14" />
+                <circle cx="60" cy="60" r="36" stroke="#06b6d4" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.6" />
+                <rect x="48" y="48" width="10" height="10" rx="1.5" fill="#0284c7" fillOpacity="0.5" stroke="#38bdf8" />
+                <rect x="62" y="48" width="10" height="10" rx="1.5" fill="#06b6d4" fillOpacity="0.5" stroke="#22d3ee" />
+                <rect x="48" y="62" width="10" height="10" rx="1.5" fill="#10b981" fillOpacity="0.5" stroke="#34d399" />
+                <rect x="62" y="62" width="10" height="10" rx="1.5" fill="#0284c7" fillOpacity="0.5" stroke="#38bdf8" />
+                <path d="M 18 60 L 36 60 L 42 50 L 48 72 L 54 36 L 62 84 L 70 42 L 76 66 L 82 56 L 88 60 L 102 60" stroke="#38bdf8" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="60" cy="60" r="3.5" fill="#ffffff" />
+              </svg>
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-lg text-slate-100 tracking-tight">WaferGuard</span>
-                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-sky-900/50 text-sky-300 border border-sky-700/50">
+                <span className="font-bold text-lg text-slate-100 tracking-tight">Wafer<span className="text-cyan-400">Pulse</span></span>
+                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-700/50">
                   MLOps SaaS
                 </span>
               </div>

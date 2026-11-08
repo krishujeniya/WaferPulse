@@ -1,4 +1,4 @@
-"""API Integration Tests for WaferGuard FastAPI Endpoints."""
+"""API Integration Tests for WaferPulse FastAPI Endpoints."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ def test_health_endpoint():
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "healthy"
-    assert "WaferGuard" in data["service"]
+    assert "WaferPulse" in data["service"]
 
 
 def test_datasets_endpoints():

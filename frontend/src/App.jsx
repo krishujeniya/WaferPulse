@@ -107,7 +107,7 @@ export default function App() {
 
       <footer className="border-t border-slate-900 bg-[#060910] py-4 text-xs font-mono text-slate-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>WaferGuard MLOps Platform &copy; {new Date().getFullYear()}</span>
+          <span>WaferPulse MLOps Platform &copy; {new Date().getFullYear()}</span>
           <span>Industrial Telemetry &bull; K-Means Chamber Ensembles &bull; Real-Time Diagnostics</span>
         </div>
       </footer>

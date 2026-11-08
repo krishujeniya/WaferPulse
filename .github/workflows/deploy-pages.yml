@@ -36,7 +36,7 @@ jobs:
       - name: Build Frontend for GitHub Pages
         working-directory: frontend
         env:
-          VITE_API_URL: https://waferguard.vercel.app
+          VITE_API_URL: https://waferpulse.vercel.app
           NODE_ENV: production
         run: bun run build
 

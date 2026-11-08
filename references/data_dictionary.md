@@ -1,4 +1,4 @@
-# 📖 WaferGuard Sensor Telemetry Data Dictionary
+# WaferPulse Sensor Telemetry Data Dictionary
 
 ## 1. Primary Identification & Quality Target
 
