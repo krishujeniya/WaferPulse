@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350" width="100%" height="100%">
+  <rect width="600" height="350" fill="#080c14" />
+  <text x="30" y="35" font-family="monospace" font-size="14" fill="#f8fafc" font-weight="bold">SENSOR TELEMETRY POPULATION STABILITY INDEX (PSI)</text>
+  <text x="30" y="55" font-family="monospace" font-size="11" fill="#64748b">Chamber Baseline vs Current Manufacturing Run</text>
+
+  <!-- PSI Threshold Guidelines -->
+  <line x1="180" y1="80" x2="180" y2="300" stroke="#10b981" stroke-width="1" stroke-dasharray="4,4" />
+  <text x="180" y="75" font-family="monospace" font-size="9" fill="#10b981" text-anchor="middle">PSI 0.10 (Stable)</text>
+
+  <line x1="320" y1="80" x2="320" y2="300" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,4" />
+  <text x="320" y="75" font-family="monospace" font-size="9" fill="#f59e0b" text-anchor="middle">PSI 0.25 (Drift)</text>
+
+  <!-- Sensor Bars -->
+  <g font-family="monospace" font-size="11" fill="#94a3b8">
+    <!-- Sensor 11 -->
+    <text x="30" y="110">Sensor_11 (RF Power)</text>
+    <rect x="180" y="98" width="180" height="14" rx="2" fill="#f43f5e" />
+    <text x="370" y="110" fill="#f43f5e" font-weight="bold">PSI = 0.284 (Critical)</text>
+
+    <!-- Sensor 25 -->
+    <text x="30" y="145">Sensor_25 (Chamber Press)</text>
+    <rect x="180" y="133" width="95" height="14" rx="2" fill="#f59e0b" />
+    <text x="285" y="145" fill="#f59e0b" font-weight="bold">PSI = 0.142 (Moderate)</text>
+
+    <!-- Sensor 42 -->
+    <text x="30" y="180">Sensor_42 (Coolant Temp)</text>
+    <rect x="180" y="168" width="65" height="14" rx="2" fill="#10b981" />
+    <text x="255" y="180" fill="#10b981">PSI = 0.082 (Stable)</text>
+
+    <!-- Sensor 03 -->
+    <text x="30" y="215">Sensor_03 (Slurry Flow)</text>
+    <rect x="180" y="203" width="40" height="14" rx="2" fill="#10b981" />
+    <text x="230" y="215" fill="#10b981">PSI = 0.038 (Stable)</text>
+
+    <!-- Sensor 18 -->
+    <text x="30" y="250">Sensor_18 (He Backside Press)</text>
+    <rect x="180" y="238" width="25" height="14" rx="2" fill="#10b981" />
+    <text x="215" y="250" fill="#10b981">PSI = 0.019 (Stable)</text>
+  </g>
+</svg>

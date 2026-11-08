@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #080c14;
+    color: #e2e8f0;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0d131f;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Concentric border helper & transitions */
+.industrial-card {
+  border-radius: 0.75rem; /* R_outer = 12px */
+  border: 1px solid #1e293b;
+  background-color: #0d131f;
+  transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1), border-color 150ms ease;
+}
+
+.industrial-card-inner {
+  border-radius: 0.5rem; /* R_inner = 8px (12px - 4px padding) */
+}
+
+.interactive-btn {
+  transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1), background-color 150ms ease;
+}
+.interactive-btn:active {
+  transform: scale(0.98);
+}

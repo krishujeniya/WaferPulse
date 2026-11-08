@@ -7,7 +7,15 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+# Virtual environments
+.venv/
+venv/
 env/
+
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+
 build/
 develop-eggs/
 dist/
@@ -75,8 +83,11 @@ target/
 # Jupyter NB Checkpoints
 .ipynb_checkpoints/
 
-# exclude data from source control by default
+# Exclude data and runtime generated artifacts
 /data/
+artifacts/
+*.csv
+waferguard.db
 
 # Mac OS-specific storage files
 .DS_Store
@@ -87,3 +98,5 @@ target/
 
 # Mypy cache
 .mypy_cache/
+.vercel
+.env*

@@ -7,15 +7,50 @@ on:
     branches: [main]
 
 jobs:
-  validate:
+  validate-backend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
-      - name: Validate Environment & Source Syntax
+          python-version: '3.12'
+
+      - name: Install uv and dependencies
         run: |
-          python -m compileall src/
-          python test_environment.py
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          $HOME/.local/bin/uv venv .venv
+          source .venv/bin/activate
+          $HOME/.local/bin/uv pip install -r requirements.txt ruff pytest httpx
+
+      - name: Verify Ruff Code Quality
+        run: |
+          source .venv/bin/activate
+          ruff check --select E,F --ignore E501 src backend
+
+      - name: Execute Full MLOps Test Ratchet
+        run: |
+          source .venv/bin/activate
+          PYTHONPATH=. pytest tests/ -v
+
+  validate-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install Dependencies
+        working-directory: frontend
+        run: bun install
+
+      - name: Build Frontend Bundle
+        working-directory: frontend
+        env:
+          NODE_ENV: production
+        run: bun run build

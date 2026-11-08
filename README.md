@@ -1,124 +1,143 @@
-# 🔬 WaferGuard: Intelligent Predictive Maintenance for Semiconductor Wafers
+# 🔬 WaferGuard: Industrial MLOps SaaS & Sensor Anomaly Platform
 
-> **Production MLOps Pipeline & Sensor Anomaly Detection for Semiconductor Manufacturing**  
-> Automated fault detection, wafer batch quality classification, and predictive maintenance built on modular data pipelines, DVC versioning, and standardized model evaluation.
+> **End-to-End MLOps SaaS for Semiconductor Predictive Maintenance, Chamber Operational Regime Clustering, and Real-Time Defect Root-Cause Attribution.**
 
 <p align="center">
-  <a href="https://github.com/krishujeniya/WaferGuard/actions/workflows/ci.yml"><img src="https://github.com/krishujeniya/WaferGuard/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
   <img src="https://img.shields.io/badge/Python-3.9%2B-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.9+" />
-  <img src="https://img.shields.io/badge/DVC-Data_Version_Control-945DD6?style=for-the-badge&logo=dvc&logoColor=white" alt="DVC" />
-  <img src="https://img.shields.io/badge/Architecture-Modular_MLOps-0052CC?style=for-the-badge" alt="MLOps" />
+  <img src="https://img.shields.io/badge/FastAPI-0.110%2B-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 18" />
+  <img src="https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Architecture-Clustered_Ensemble_MLOps-0052CC?style=for-the-badge" alt="MLOps" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License MIT" />
 </p>
 
 ---
 
-## 🏭 Industrial Context
+## 🏭 Industrial Overview
 
-In semiconductor fabrication plants (fabs), wafer defects detected post-packaging result in astronomical yield loss and equipment downtime. Real-time telemetry streaming from hundreds of sensor chambers across chemical mechanical planarization (CMP), photolithography, and plasma etching must be continuously audited for sub-micron sensor deviations.
+In semiconductor fabrication plants (fabs), wafer defects undetected before packaging result in millions of dollars in yield loss and equipment downtime. Multi-sensor telemetry streaming from chemical mechanical planarization (CMP), photolithography, and plasma etching tools must be continuously inspected for sub-micron process shifts.
 
-**WaferGuard** implements an industrial-grade predictive maintenance architecture that ingests raw telemetry batches, detects sensor drift, trains high-recall classification models, and serves automated prediction reports across batch manufacturing runs.
+**WaferGuard** is a complete, production-grade MLOps SaaS that ingests raw multi-sensor telemetry, validates strict data contracts, clusters chamber operational regimes using K-Means, trains specialized ensemble classifiers per chamber, monitors sensor distribution drift (KS-test & PSI), and attributes wafer defects directly to root-cause anomalous sensors.
 
 ---
 
-## ⚡ MLOps Lifecycle & Data Flow
+## ⚡ Architecture Topology & Data Flow
 
 ```mermaid
 flowchart TD
-    subgraph Ingestion["1. Telemetry Ingestion"]
-        A1["Batch Sensor Stream<br/>(Training_Batch_Files)"] --> A2["Data Validation & Schema Verification"]
-        A2 --> A3["Immutable Raw Data Store<br/>(DVC Versioned)"]
+    subgraph Ingestion["1. Telemetry Ingestion & Validation"]
+        A1["Raw Sensor Stream<br/>(Training_Batch_Files)"] --> A2["TelemetryValidator<br/>(Schema & Quarantine Checks)"]
+        A2 --> A3["Verified Ingestion Store"]
     end
 
-    subgraph FeatureEngineering["2. Preprocessing & Feature Engineering"]
-        A3 --> B1["Null Imputation & Collinear Pruning"]
-        B1 --> B2["Robust Scaler & Outlier Suppression"]
-        B2 --> B3["Canonical Feature Artifacts"]
+    subgraph FeatureEngineering["2. Robust Preprocessing"]
+        A3 --> B1["Null Imputation (Median Strategy)"]
+        B1 --> B2["Dead Sensor & Zero-Variance Pruning"]
+        B2 --> B3["Robust Scaler & Outlier Suppression"]
     end
 
     subgraph Modeling["3. Clustered Ensemble Modeling"]
-        B3 --> C1["K-Means Chamber Clustering"]
-        C1 --> C2["Cluster-Specific Ensemble Classifiers<br/>(XGBoost / Random Forest)"]
-        C2 --> C3["Model Registry & Validation"]
+        B3 --> C1["K-Means Chamber Regime Clustering<br/>(Silhouette Score K-Optimization)"]
+        C1 --> C2["Cluster-Specific Ensemble Classifiers<br/>(Balanced Random Forest & HistGradientBoosting)"]
+        C2 --> C3["Model Registry & Metadata Ledger<br/>(Versioned Artifacts & Zero-Downtime Rollback)"]
     end
 
-    subgraph Prediction["4. Inference & Batch Reporting"]
-        D1["Prediction_Batch_Files"] --> D2["Batch Inference Engine"]
+    subgraph Serving["4. SaaS API & Real-Time Diagnostics"]
+        D1["Prediction_Batch_Files / Live Telemetry"] --> D2["Inference Engine (REST & WebSocket)"]
         C3 --> D2
-        D2 --> D3["Defect Classification & Root-Cause Reports"]
+        D2 --> D3["Defect Classification & Root-Cause Z-Score Attribution"]
+        D2 --> D4["Sensor Drift Monitor (KS-Test & PSI Tracking)"]
     end
 ```
 
 ---
 
-## 🛠️ Engineering Workflows (Makefile Powered)
+## 💻 Tech Stack
 
-WaferGuard leverages structured `make` targets to maintain reproducible pipelines:
-
-| Command | Operational Scope |
-| :--- | :--- |
-| `make requirements` | Verifies Python environment and installs pinned dependencies |
-| `make data` | Ingests and validates raw sensor telemetry batches via DVC |
-| `make clean` | Removes compiled artifacts, stale caches, and intermediate batches |
-| `make lint` | Enforces flake8 and PEP8 compliance across `src/` modules |
-| `make sync_data_to_s3` | Synchronizes versioned datasets to remote S3 blob storage |
-| `make sync_data_from_s3`| Pulls verified training batches from S3 data lake |
+- **Machine Learning & Core Pipelines**: Python 3.9+, Scikit-Learn (K-Means, Balanced Random Forest, HistGradientBoosting, RobustScaler), Scipy (two-sample Kolmogorov-Smirnov test), Pandas, NumPy, Joblib.
+- **Backend API & Streaming Engine**: FastAPI, Uvicorn, Pydantic V2, SQLAlchemy, WebSockets, aiosqlite.
+- **Frontend SPA**: React 18, Vite, Tailwind CSS, Lucide Icons, Canvas / SVG Silicon Wafer Die Map.
+- **Packaging & Orchestration**: Docker, Docker Compose, Makefile.
 
 ---
 
-## 🚀 Quickstart & Pipeline Reproduction
+## 🛠️ API Surface & Capabilities
+
+| Endpoint | Method | Functionality |
+| :--- | :--- | :--- |
+| `/health` | `GET` | System operational health and version status |
+| `/api/v1/datasets` | `GET` | List all ingested batches with validation summaries |
+| `/api/v1/datasets/upload` | `POST` | Upload and validate new sensor telemetry CSV batch |
+| `/api/v1/datasets/generate-sample` | `POST` | Generate realistic synthetic wafer telemetry lots |
+| `/api/v1/datasets/{filename}/preview` | `GET` | View raw rows preview and sensor channel statistics |
+| `/api/v1/train` | `POST` | Trigger asynchronous background retraining pipeline |
+| `/api/v1/train/jobs` | `GET` | List all training jobs with stage progress and metrics |
+| `/api/v1/train/jobs/{id}` | `GET` | Real-time status and stage progress for a specific job |
+| `/api/v1/models` | `GET` | List registered model versions and evaluation cards |
+| `/api/v1/models/active` | `GET` | Retrieve currently active production model card |
+| `/api/v1/models/promote` | `POST` | Promote candidate model version to active production |
+| `/api/v1/models/rollback` | `POST` | Roll back to previous active model version |
+| `/api/v1/predict/single` | `POST` | Real-time single wafer prediction with root-cause attribution |
+| `/api/v1/predict/batch` | `POST` | Batch inference on CSV files with yield rate calculations |
+| `/api/v1/monitoring/drift` | `GET` | Calculate Kolmogorov-Smirnov and PSI sensor drift stats |
+| `/api/v1/monitoring/fab-overview` | `GET` | Chamber health matrix, live recipes, and sensor readouts |
+| `/ws/telemetry` | `WebSocket` | Real-time sensor pulse streaming from fabrication chambers |
+
+---
+
+## 🚀 Quickstart & Reproduction
 
 ### 1. Environment Setup
 ```bash
 git clone https://github.com/krishujeniya/WaferGuard.git
 cd WaferGuard
+
+# Create Python virtual environment
 python3 -m venv .venv
 source .venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 2. Ingest Data & Trigger Pipeline
+### 2. Run the MLOps Pipeline
 ```bash
-# Verify environment dependencies
-python test_environment.py
+# Execute end-to-end training pipeline
+make train
 
-# Execute automated pipeline
-make data
+# Run batch inference
+make predict
 ```
+
+### 3. Run the Full Test Suite
+```bash
+make test
+```
+
+### 4. Start the Application
+```bash
+# Terminal 1: Launch FastAPI Backend (Port 8000)
+make run-backend
+
+# Terminal 2: Launch Vite React Dashboard (Port 3000)
+make run-frontend
+```
+
+Open your browser at `http://localhost:3000` to access the Fab Dashboard, Pipeline Lab, Model Registry, Inference Studio, and Drift Monitor.
 
 ---
 
-## 📁 Repository Organization
+## 🐳 Docker Deployment
 
+To launch the full-stack MLOps platform in containers:
+
+```bash
+docker-compose up --build
 ```
-├── .dvc/                  # Data Version Control configuration & remotes
-├── Makefile               # Standardized MLOps automation targets
-├── Prediction_Batch_files # Production inference telemetry batches
-├── Training_Batch_Files   # Historical labeled wafer sensor batches
-├── docs/                  # Sphinx technical documentation suite
-├── models/                # Serialized model artifacts & cluster estimators
-├── notebooks/             # Exploratory signal analysis & sensor diagnostics
-├── src/
-│   ├── data/              # Ingestion, validation, and schema checking
-│   ├── features/          # Feature engineering, transformation, and scaling
-│   ├── models/            # Cluster segmentation, training, and evaluation
-│   └── visualization/     # Sensor drift and defect distribution analytics
-├── tox.ini                # Multi-environment automated testing
-└── LICENSE                # MIT Open-Source License
-```
+- Backend API docs: `http://localhost:8000/docs`
+- Interactive Dashboard: `http://localhost:3000`
 
 ---
 
-## 📄 License & Citation
-
-This project is licensed under the [MIT License](LICENSE).
-
-```bibtex
-@software{ujeniya2026waferguard,
-  author = {Krish Ujeniya},
-  title = {WaferGuard: Predictive Maintenance & Sensor Fault Classification for Semiconductor Wafers},
-  year = {2026},
-  publisher = {GitHub},
-  url = {https://github.com/krishujeniya/WaferGuard}
-}
-```
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
