@@ -1,143 +1,286 @@
-# 🔬 WaferGuard: Industrial MLOps SaaS & Sensor Anomaly Platform
+# WaferGuard: Industrial MLOps Platform for Semiconductor Wafer Fault Detection
 
-> **End-to-End MLOps SaaS for Semiconductor Predictive Maintenance, Chamber Operational Regime Clustering, and Real-Time Defect Root-Cause Attribution.**
+[![CI](https://github.com/krishujeniya/WaferGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/krishujeniya/WaferGuard/actions/workflows/ci.yml)
+[![Deploy Frontend to GitHub Pages](https://github.com/krishujeniya/WaferGuard/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/krishujeniya/WaferGuard/actions/workflows/deploy-pages.yml)
+[![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![React 18](https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Python-3.9%2B-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.9+" />
-  <img src="https://img.shields.io/badge/FastAPI-0.110%2B-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
-  <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 18" />
-  <img src="https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
-  <img src="https://img.shields.io/badge/Architecture-Clustered_Ensemble_MLOps-0052CC?style=for-the-badge" alt="MLOps" />
-  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License MIT" />
-</p>
-
----
-
-## 🏭 Industrial Overview
-
-In semiconductor fabrication plants (fabs), wafer defects undetected before packaging result in millions of dollars in yield loss and equipment downtime. Multi-sensor telemetry streaming from chemical mechanical planarization (CMP), photolithography, and plasma etching tools must be continuously inspected for sub-micron process shifts.
-
-**WaferGuard** is a complete, production-grade MLOps SaaS that ingests raw multi-sensor telemetry, validates strict data contracts, clusters chamber operational regimes using K-Means, trains specialized ensemble classifiers per chamber, monitors sensor distribution drift (KS-test & PSI), and attributes wafer defects directly to root-cause anomalous sensors.
+WaferGuard is an end-to-end MLOps platform engineered for semiconductor manufacturing fabrication plants (fabs). It ingests multi-channel sensor telemetry, validates data contracts against schema definitions, clusters operational chamber regimes using K-Means, trains specialized ensemble classifiers per chamber, detects distribution drift using Kolmogorov-Smirnov tests and Population Stability Index (PSI), and diagnoses wafer defects using Z-score anomaly attribution.
 
 ---
 
-## ⚡ Architecture Topology & Data Flow
+## Live Deployments
+
+- **Production Frontend Dashboard**: [https://krishujeniya.github.io/WaferGuard/](https://krishujeniya.github.io/WaferGuard/)
+- **Production Backend API**: [https://waferguard.vercel.app](https://waferguard.vercel.app)
+- **Interactive Swagger Documentation**: [https://waferguard.vercel.app/docs](https://waferguard.vercel.app/docs)
+- **API Health Endpoint**: [https://waferguard.vercel.app/health](https://waferguard.vercel.app/health)
+
+---
+
+## System Architecture
 
 ```mermaid
 flowchart TD
     subgraph Ingestion["1. Telemetry Ingestion & Validation"]
-        A1["Raw Sensor Stream<br/>(Training_Batch_Files)"] --> A2["TelemetryValidator<br/>(Schema & Quarantine Checks)"]
-        A2 --> A3["Verified Ingestion Store"]
+        A1["Raw Batch Files<br/>(data/raw/*.csv)"] --> A2["TelemetryValidator"]
+        A2 -->|Valid Schema| A3["Interim Clean Data<br/>(data/interim/)"]
+        A2 -->|Corrupt / Missing Schema| A4["Quarantine Routing<br/>(data/quarantine/)"]
     end
 
-    subgraph FeatureEngineering["2. Robust Preprocessing"]
-        A3 --> B1["Null Imputation (Median Strategy)"]
-        B1 --> B2["Dead Sensor & Zero-Variance Pruning"]
-        B2 --> B3["Robust Scaler & Outlier Suppression"]
+    subgraph Preprocessing["2. Feature Engineering"]
+        A3 --> B1["Median Missingness Imputation"]
+        B1 --> B2["Zero-Variance & Dead Sensor Pruning"]
+        B2 --> B3["RobustScaler (Median / IQR Normalization)"]
+        B3 --> B4["Processed Feature Matrix<br/>(data/processed/)"]
     end
 
     subgraph Modeling["3. Clustered Ensemble Modeling"]
-        B3 --> C1["K-Means Chamber Regime Clustering<br/>(Silhouette Score K-Optimization)"]
-        C1 --> C2["Cluster-Specific Ensemble Classifiers<br/>(Balanced Random Forest & HistGradientBoosting)"]
-        C2 --> C3["Model Registry & Metadata Ledger<br/>(Versioned Artifacts & Zero-Downtime Rollback)"]
+        B4 --> C1["K-Means Chamber Clustering<br/>(Silhouette-Optimized K: 2-4)"]
+        C1 --> C2["Chamber-Specific Ensemble Classifiers<br/>(Balanced Random Forest + HistGradientBoosting)"]
+        C2 --> C3["Model Registry & Versioned Artifacts<br/>(models/vYYYYMMDD_HHMMSS/)"]
     end
 
-    subgraph Serving["4. SaaS API & Real-Time Diagnostics"]
-        D1["Prediction_Batch_Files / Live Telemetry"] --> D2["Inference Engine (REST & WebSocket)"]
-        C3 --> D2
-        D2 --> D3["Defect Classification & Root-Cause Z-Score Attribution"]
-        D2 --> D4["Sensor Drift Monitor (KS-Test & PSI Tracking)"]
+    subgraph Serving["4. Serving & Inference Engine"]
+        C3 --> D1["FastAPI Backend (Vercel Serverless)"]
+        D2["Single Wafer Sensor Reading"] --> D1
+        D3["Batch Telemetry CSV Upload"] --> D1
+        D1 --> D4["Defect Classification (Pass vs Defect)"]
+        D1 --> D5["Top-K Z-Score Anomaly Attribution"]
+    end
+
+    subgraph Observability["5. Production Observability"]
+        D1 --> E1["Two-Sample Kolmogorov-Smirnov Test"]
+        D1 --> E2["Population Stability Index (PSI)"]
+        D1 --> E3["React 18 Dashboard (GitHub Pages)"]
     end
 ```
 
 ---
 
-## 💻 Tech Stack
+## Directory Structure
 
-- **Machine Learning & Core Pipelines**: Python 3.9+, Scikit-Learn (K-Means, Balanced Random Forest, HistGradientBoosting, RobustScaler), Scipy (two-sample Kolmogorov-Smirnov test), Pandas, NumPy, Joblib.
-- **Backend API & Streaming Engine**: FastAPI, Uvicorn, Pydantic V2, SQLAlchemy, WebSockets, aiosqlite.
-- **Frontend SPA**: React 18, Vite, Tailwind CSS, Lucide Icons, Canvas / SVG Silicon Wafer Die Map.
-- **Packaging & Orchestration**: Docker, Docker Compose, Makefile.
+The project follows the Cookiecutter Data Science and Cookiecutter MLOps architectural layout:
+
+```
+WaferGuard/
+├── .github/
+│   └── workflows/
+│       ├── ci.yml                 # Ruff linting, test suite ratchet, and frontend build
+│       └── deploy-pages.yml       # Automated GitHub Pages deployment pipeline
+├── api/
+│   └── index.py                   # Vercel serverless entry point
+├── backend/
+│   └── app/
+│       ├── config.py              # Environment configuration and serverless storage path routing
+│       ├── main.py                # FastAPI app initialization and route registration
+│       ├── db/
+│       │   ├── database.py        # SQLAlchemy engine and session factory
+│       │   └── models.py          # Relational schemas for datasets, jobs, and alerts
+│       ├── routers/
+│       │   ├── datasets.py        # Dataset upload, synthetic generation, and previews
+│       │   ├── models.py          # Model registry version listing, promote, and rollback
+│       │   ├── monitoring.py      # PSI/KS sensor drift and chamber health metrics
+│       │   ├── predict.py         # Single wafer diagnosis and batch prediction
+│       │   └── train.py           # Background pipeline execution and job tracking
+│       ├── schemas/               # Pydantic V2 input/output validation models
+│       └── services/              # Pipeline execution and telemetry streaming logic
+├── data/
+│   ├── external/                  # Third-party baseline references
+│   ├── interim/                   # Validated, clean telemetry batches
+│   ├── prediction/                # Production batch prediction inputs
+│   ├── processed/                 # Imputed, scaled feature matrices
+│   ├── quarantine/                # Schema-rejected batches
+│   └── raw/                       # Raw sensor telemetry CSVs
+├── frontend/                      # React 18 single-page application
+│   ├── src/
+│   │   ├── components/            # WaferMap, PipelineVisualizer, MetricCard, Navbar
+│   │   ├── pages/                 # Dashboard, Inference, PipelineLab, ModelRegistry, Monitoring
+│   │   └── services/              # Axios API client configured for production endpoints
+│   ├── vite.config.js             # Vite configuration with GitHub Pages base path
+│   └── package.json
+├── models/
+│   ├── active_model.json          # Active model pointer and promotion audit trail
+│   ├── preprocessor.joblib        # Fitted scaler and feature metadata
+│   └── v20261108_233353/          # Versioned ensemble, clusterer, and metadata
+├── notebooks/
+│   └── 1.0-wafer-sensor-exploratory-analysis.ipynb
+├── references/
+│   └── data_dictionary.md         # Sensor channel engineering definitions
+├── reports/
+│   └── figures/                   # Wafer die maps and sensor drift visualizations
+├── src/
+│   ├── data/
+│   │   ├── generator.py           # Multi-chamber wafer telemetry generation
+│   │   ├── make_dataset.py        # Dataset build CLI
+│   │   └── validator.py           # Data contract and schema validator
+│   ├── explain/
+│   │   └── root_cause.py          # Top-K Z-score anomaly attribution engine
+│   ├── features/
+│   │   ├── build_features.py      # Feature engineering CLI
+│   │   └── preprocessor.py        # Imputation, dead-sensor drop, RobustScaler
+│   ├── models/
+│   │   ├── clusterer.py           # Silhouette-optimized K-Means clustering
+│   │   ├── ensemble.py            # Chamber-specific balanced ensemble
+│   │   ├── predict_model.py       # Batch inference CLI
+│   │   ├── registry.py            # Local model registry with promotion/rollback
+│   │   └── train_model.py         # Model training CLI
+│   ├── monitoring/
+│   │   └── drift.py               # Population Stability Index and KS-test engine
+│   └── visualization/
+│       └── visualize.py           # Wafer die maps and drift SVG generators
+├── tests/
+│   ├── test_api.py                # FastAPI REST endpoint integration tests
+│   ├── test_cookiecutter_pipeline.py # Dataset and visualization CLI tests
+│   └── test_ml_pipeline.py        # Unit tests for MLOps pipeline components
+├── Dockerfile.backend             # Container definition for backend
+├── Dockerfile.frontend            # Container definition for frontend
+├── docker-compose.yml             # Local multi-service orchestration
+├── Makefile                       # Standard execution targets
+├── requirements.txt               # Locked production dependencies
+├── setup.py                       # Installable package definition
+└── vercel.json                    # Vercel serverless deployment configuration
+```
 
 ---
 
-## 🛠️ API Surface & Capabilities
+## Technical Details
 
-| Endpoint | Method | Functionality |
+### 1. Multi-Chamber Operational Regime Clustering
+Semiconductor processing tools exhibit distinct physical operating regimes across chemical mechanical planarization (CMP), lithography, and plasma etching. Rather than training a single monolithic model across disparate baselines, WaferGuard runs K-Means clustering with automated silhouette score optimization ($K \in [2, 4]$) to segment wafers into distinct operational clusters before defect classification.
+
+### 2. Clustered Ensemble Classifiers
+Wafer failure in high-volume fabs is a rare event (typically 5% to 8% defect rate). WaferGuard pairs each chamber cluster with an isolated ensemble composed of:
+- **Balanced Random Forest**: Re-balances bootstrapping to handle extreme class imbalance without synthetic data corruption.
+- **HistGradientBoosting**: Captures non-linear sensor correlations and interaction effects.
+
+Predictions are combined using soft probability voting, producing calibrated defect probabilities alongside binary pass/defect classifications.
+
+### 3. Root-Cause Anomaly Attribution
+When a wafer is flagged as defective, the platform calculates directional Z-score deviations against baseline chamber statistics:
+
+$$Z_i = \frac{x_i - \mu_{\text{baseline}, i}}{\sigma_{\text{baseline}, i}}$$
+
+The top-$K$ deviating channels are surfaced in real time with direction (`HIGH` / `LOW`), absolute Z-score, and severity ratings (`CRITICAL`, `WARNING`, `NOMINAL`), pointing process engineers directly to failing equipment components.
+
+### 4. Sensor Drift Monitoring
+Sensor distribution shifts indicate chamber contamination, RF generator degradation, or optical wear. WaferGuard computes:
+- **Two-Sample Kolmogorov-Smirnov Test**: Identifies continuous distribution divergence ($p < 0.05$).
+- **Population Stability Index (PSI)**: Quantifies shift severity across 10 quantile bins:
+  - $\text{PSI} < 0.10$: Stable
+  - $0.10 \le \text{PSI} < 0.25$: Moderate Drift / Process Shift
+  - $\text{PSI} \ge 0.25$: Critical Drift / Tool Recalibration Required
+
+---
+
+## API Surface
+
+| Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `/health` | `GET` | System operational health and version status |
-| `/api/v1/datasets` | `GET` | List all ingested batches with validation summaries |
-| `/api/v1/datasets/upload` | `POST` | Upload and validate new sensor telemetry CSV batch |
-| `/api/v1/datasets/generate-sample` | `POST` | Generate realistic synthetic wafer telemetry lots |
-| `/api/v1/datasets/{filename}/preview` | `GET` | View raw rows preview and sensor channel statistics |
-| `/api/v1/train` | `POST` | Trigger asynchronous background retraining pipeline |
-| `/api/v1/train/jobs` | `GET` | List all training jobs with stage progress and metrics |
-| `/api/v1/train/jobs/{id}` | `GET` | Real-time status and stage progress for a specific job |
-| `/api/v1/models` | `GET` | List registered model versions and evaluation cards |
-| `/api/v1/models/active` | `GET` | Retrieve currently active production model card |
-| `/api/v1/models/promote` | `POST` | Promote candidate model version to active production |
-| `/api/v1/models/rollback` | `POST` | Roll back to previous active model version |
-| `/api/v1/predict/single` | `POST` | Real-time single wafer prediction with root-cause attribution |
-| `/api/v1/predict/batch` | `POST` | Batch inference on CSV files with yield rate calculations |
-| `/api/v1/monitoring/drift` | `GET` | Calculate Kolmogorov-Smirnov and PSI sensor drift stats |
-| `/api/v1/monitoring/fab-overview` | `GET` | Chamber health matrix, live recipes, and sensor readouts |
-| `/ws/telemetry` | `WebSocket` | Real-time sensor pulse streaming from fabrication chambers |
+| `GET` | `/health` | Service health and version status |
+| `GET` | `/api/v1/datasets` | Ingested telemetry batches and schema validation status |
+| `POST` | `/api/v1/datasets/upload` | Upload and validate raw CSV batch file |
+| `POST` | `/api/v1/datasets/generate-sample` | Generate synthetic multi-chamber wafer batches |
+| `GET` | `/api/v1/datasets/{filename}/preview` | Preview rows and sensor statistics for a batch |
+| `POST` | `/api/v1/train` | Trigger asynchronous background training run |
+| `GET` | `/api/v1/train/jobs` | List training runs with stage progress and metrics |
+| `GET` | `/api/v1/train/jobs/{id}` | Detailed status and evaluation card for a training job |
+| `GET` | `/api/v1/models` | List all versioned models in registry |
+| `GET` | `/api/v1/models/active` | Active production model metadata |
+| `POST` | `/api/v1/models/promote` | Promote model version to production |
+| `POST` | `/api/v1/models/rollback` | Roll back to previous active model version |
+| `POST` | `/api/v1/predict/single` | Single wafer prediction with root-cause diagnosis |
+| `POST` | `/api/v1/predict/batch` | Batch inference on uploaded or existing CSV files |
+| `GET` | `/api/v1/monitoring/drift` | Multi-sensor PSI and Kolmogorov-Smirnov drift statistics |
+| `GET` | `/api/v1/monitoring/fab-overview` | Real-time chamber health, active recipes, and yield rates |
+| `WS` | `/ws/telemetry` | WebSocket stream for simulated real-time chamber telemetry |
 
 ---
 
-## 🚀 Quickstart & Reproduction
+## Quickstart
 
-### 1. Environment Setup
+### Prerequisites
+- Python 3.10+ (Python 3.12 recommended)
+- Node.js 18+ or Bun
+- Git
+
+### 1. Repository Setup
 ```bash
 git clone https://github.com/krishujeniya/WaferGuard.git
 cd WaferGuard
 
-# Create Python virtual environment
 python3 -m venv .venv
 source .venv/bin/activate
-
-# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 2. Run the MLOps Pipeline
+### 2. Standard Workflow Commands
 ```bash
-# Execute end-to-end training pipeline
+# Ingest and validate raw telemetry files into interim data
+make data
+
+# Build feature matrices and fit preprocessor
+make features
+
+# Execute model training and version packaging
 make train
 
-# Run batch inference
+# Run batch inference on prediction files
 make predict
-```
 
-### 3. Run the Full Test Suite
-```bash
+# Generate wafer die map and sensor drift figures
+make visualize
+
+# Run full test suite
 make test
+
+# Verify code quality
+make lint
 ```
 
-### 4. Start the Application
+### 3. Local Development Servers
 ```bash
 # Terminal 1: Launch FastAPI Backend (Port 8000)
 make run-backend
 
-# Terminal 2: Launch Vite React Dashboard (Port 3000)
+# Terminal 2: Launch Vite React Frontend (Port 3000)
 make run-frontend
 ```
 
-Open your browser at `http://localhost:3000` to access the Fab Dashboard, Pipeline Lab, Model Registry, Inference Studio, and Drift Monitor.
+Access the frontend application at `http://localhost:3000` and Swagger documentation at `http://localhost:8000/docs`.
 
 ---
 
-## 🐳 Docker Deployment
+## Containerized Deployment
 
-To launch the full-stack MLOps platform in containers:
+Run the complete platform locally using Docker Compose:
 
 ```bash
 docker-compose up --build
 ```
-- Backend API docs: `http://localhost:8000/docs`
-- Interactive Dashboard: `http://localhost:3000`
+
+- Frontend: `http://localhost:3000`
+- Backend API: `http://localhost:8000`
+- API Documentation: `http://localhost:8000/docs`
 
 ---
 
-## 📄 License
+## Testing & Quality Ratchet
+
+Continuous integration enforces zero regressions on every commit:
+- **Linting**: Checked with Ruff (`ruff check --select E,F --ignore E501 src backend`).
+- **Tests**: 15 unit and integration tests passing in pytest across data generation, schema validation, feature engineering, clustering, ensemble training, root-cause attribution, and REST endpoints.
+- **CI Workflows**: Automated on GitHub Actions (`.github/workflows/ci.yml` and `.github/workflows/deploy-pages.yml`).
+
+```bash
+PYTHONPATH=. pytest tests/ -v
+```
+
+---
+
+## License
+
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
