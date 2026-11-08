@@ -25,21 +25,39 @@ router = APIRouter(prefix="/monitoring", tags=["Monitoring"])
 @router.get("/drift", response_model=DriftSummaryResponse)
 def get_sensor_drift_report():
     """Calculate Population Stability Index (PSI) and Kolmogorov-Smirnov drift statistics."""
-    # Load baseline from Training_Batch_Files
-    train_files = list(TRAINING_BATCHES_DIR.glob("*.csv"))
-    if not train_files:
-        train_files = generate_batch_files(TRAINING_BATCHES_DIR, num_files=2, is_training=True)
+    # Load baseline from Training_Batch_Files or in-memory fallback
+    base_df = None
+    try:
+        TRAINING_BATCHES_DIR.mkdir(parents=True, exist_ok=True)
+        train_files = list(TRAINING_BATCHES_DIR.glob("*.csv"))
+        if not train_files:
+            train_files = generate_batch_files(TRAINING_BATCHES_DIR, num_files=2, is_training=True)
+        if train_files:
+            base_df = pd.concat([pd.read_csv(f) for f in train_files[:3]], ignore_index=True)
+    except Exception:
+        pass
 
-    base_df = pd.concat([pd.read_csv(f) for f in train_files[:3]], ignore_index=True)
+    if base_df is None or base_df.empty:
+        from src.data.generator import generate_wafer_telemetry
+        base_df = generate_wafer_telemetry(num_samples=250, is_training=True, random_state=42)
 
-    # Load current from Prediction_Batch_files
-    pred_files = list(PREDICTION_BATCHES_DIR.glob("*.csv"))
-    if not pred_files:
-        pred_files = generate_batch_files(
-            PREDICTION_BATCHES_DIR, num_files=1, is_training=False, random_state_start=999
-        )
+    # Load current from Prediction_Batch_files or in-memory fallback
+    curr_df = None
+    try:
+        PREDICTION_BATCHES_DIR.mkdir(parents=True, exist_ok=True)
+        pred_files = list(PREDICTION_BATCHES_DIR.glob("*.csv"))
+        if not pred_files:
+            pred_files = generate_batch_files(
+                PREDICTION_BATCHES_DIR, num_files=1, is_training=False, random_state_start=999
+            )
+        if pred_files:
+            curr_df = pd.concat([pd.read_csv(f) for f in pred_files[:3]], ignore_index=True)
+    except Exception:
+        pass
 
-    curr_df = pd.concat([pd.read_csv(f) for f in pred_files[:3]], ignore_index=True)
+    if curr_df is None or curr_df.empty:
+        from src.data.generator import generate_wafer_telemetry
+        curr_df = generate_wafer_telemetry(num_samples=180, is_training=False, random_state=999)
 
     summary = assess_sensor_drift(baseline_df=base_df, current_df=curr_df)
 

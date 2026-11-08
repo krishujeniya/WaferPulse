@@ -47,6 +47,7 @@ async def upload_dataset(
         raise HTTPException(status_code=400, detail="Only CSV files are supported.")
 
     dest_dir = TRAINING_BATCHES_DIR if file_type == "training" else PREDICTION_BATCHES_DIR
+    dest_dir.mkdir(parents=True, exist_ok=True)
     dest_path = dest_dir / file.filename
 
     with open(dest_path, "wb") as buffer:

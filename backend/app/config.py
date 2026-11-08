@@ -6,19 +6,22 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parents[2]
-DATA_DIR = BASE_DIR / "data"
 MODELS_DIR = BASE_DIR / "models"
-ARTIFACTS_DIR = BASE_DIR / "artifacts"
-TRAINING_BATCHES_DIR = DATA_DIR / "raw"
-PREDICTION_BATCHES_DIR = DATA_DIR / "prediction"
 IS_VERCEL = bool(os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"))
 
 if IS_VERCEL:
     DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:////tmp/waferguard.db")
+    DATA_DIR = Path("/tmp/data")
     REPORTS_DIR = Path("/tmp/reports")
+    ARTIFACTS_DIR = Path("/tmp/artifacts")
 else:
     DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'waferguard.db'}")
+    DATA_DIR = BASE_DIR / "data"
     REPORTS_DIR = BASE_DIR / "reports"
+    ARTIFACTS_DIR = BASE_DIR / "artifacts"
+
+TRAINING_BATCHES_DIR = DATA_DIR / "raw"
+PREDICTION_BATCHES_DIR = DATA_DIR / "prediction"
 
 # Ensure runtime directories exist where permitted
 for p in [

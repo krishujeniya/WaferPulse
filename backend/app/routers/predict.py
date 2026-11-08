@@ -96,6 +96,7 @@ async def predict_batch_file(
     """Run batch inference on an uploaded CSV file or existing prediction batch."""
     from backend.app.config import PREDICTION_BATCHES_DIR
 
+    PREDICTION_BATCHES_DIR.mkdir(parents=True, exist_ok=True)
     if file:
         dest_path = PREDICTION_BATCHES_DIR / file.filename
         with open(dest_path, "wb") as buffer:
