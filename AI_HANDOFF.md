@@ -36,5 +36,7 @@ curl -i https://waferpulse.vercel.app/health
 - Updated the navigation labels and explicitly mark the fallback telemetry stream as `DEMO FEED`; only an open WebSocket is labeled `LIVE FAB`.
 - Removed fabricated overview metric/chamber fallbacks. The overview now derives its state badge from API alarm data and shows an unavailable state when that data is missing. The wafer map is labeled illustrative and its die details work on keyboard focus.
 - Evidence: production API GET returned 3,590 wafers, 96.3% yield, 60 active alarms, and Chamber C in `WARNING`. Frontend build passed with `NODE_ENV=production bun run build`. Backend ratchet passed with `.venv/bin/python -m pytest -q tests/` (15 passed); Ruff passed with `.venv/bin/python -m ruff check --select E,F --ignore E501 src backend`. `git diff --check` passed. A 390 px rendered screenshot was inspected; automated browser interaction and accessibility audits remain unverified.
-- CI and Pages deployment for this change are pending push.
-- Next command: `git status --short --branch && git diff --check`.
+- Pushed as `32f3f8c` to `main`. CI run `42569091797` passed on rerun after the first attempt hit HTTP 504 downloading Bun. GitHub Pages deployment run `42569091753` passed. The live Pages HTML serves the generated assets for this build.
+- Live API recheck returned `ONLINE`, 60 active alarms, Chamber C `WARNING`, and `CRITICAL` drift status. Those are live system values, not frontend checks.
+- Last verified worktree was clean and `HEAD` matched `origin/main` at `32f3f8c`.
+- Next command: `git status --short --branch && git log -1 --oneline`.
