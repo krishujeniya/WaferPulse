@@ -12,6 +12,7 @@ export default function App() {
   const [activeModel, setActiveModel] = useState(null);
   const [liveTelemetry, setLiveTelemetry] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [isSimulated, setIsSimulated] = useState(false);
 
   const loadActiveModel = async () => {
     try {
@@ -30,7 +31,8 @@ export default function App() {
     let intervalId;
 
     const startFallback = () => {
-      setIsConnected(true);
+      setIsConnected(false);
+      setIsSimulated(true);
       const chambers = ['Chamber_A (CMP)', 'Chamber_B (Litho)', 'Chamber_C (Etch)'];
       intervalId = setInterval(() => {
         const isAnomaly = Math.random() < 0.05;
@@ -59,7 +61,7 @@ export default function App() {
 
       try {
         ws = new WebSocket(wsUrl);
-        ws.onopen = () => setIsConnected(true);
+        ws.onopen = () => { setIsConnected(true); setIsSimulated(false); };
         ws.onmessage = (event) => {
           try {
             setLiveTelemetry(JSON.parse(event.data));
@@ -89,15 +91,17 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#080c14] text-slate-100">
+    <div className="app-shell min-h-screen flex flex-col bg-[#080c14] text-slate-100">
+      <a className="skip-link" href="#main-content">Skip to dashboard</a>
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         activeModel={activeModel}
         isConnected={isConnected}
+        isSimulated={isSimulated}
       />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main id="main-content" className="app-main flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6" tabIndex="-1">
         {activeTab === 'dashboard' && <Dashboard liveTelemetry={liveTelemetry} />}
         {activeTab === 'pipeline' && <PipelineLab onModelTrained={loadActiveModel} />}
         {activeTab === 'models' && <ModelRegistry />}
@@ -105,7 +109,7 @@ export default function App() {
         {activeTab === 'monitoring' && <Monitoring />}
       </main>
 
-      <footer className="border-t border-slate-900 bg-[#060910] py-4 text-xs font-mono text-slate-500">
+      <footer className="app-footer border-t border-slate-900 bg-[#060910] py-4 text-xs font-mono text-slate-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>WaferPulse MLOps Platform &copy; {new Date().getFullYear()}</span>
           <span>Industrial Telemetry &bull; K-Means Chamber Ensembles &bull; Real-Time Diagnostics</span>

@@ -38,13 +38,13 @@ export default function WaferMap({ onSelectDie }) {
     <div className="industrial-card p-5 relative overflow-hidden flex flex-col items-center">
       <div className="w-full flex items-center justify-between mb-3">
         <div>
-          <h3 className="text-sm font-semibold text-slate-200">300mm Silicon Wafer Topography</h3>
-          <p className="text-xs text-slate-400 font-mono">Die Inspection Grid & Spatial Defect Map</p>
+          <h3 className="text-sm font-semibold text-slate-200">Illustrative 300mm wafer map</h3>
+          <p className="text-xs text-slate-400 font-mono">Sample die pattern · select a die for details</p>
         </div>
         <div className="flex items-center space-x-3 text-xs font-mono">
           <div className="flex items-center space-x-1">
             <span className="w-2.5 h-2.5 rounded-sm bg-emerald-500/80"></span>
-            <span className="text-slate-400">Pass (Yield 96.2%)</span>
+            <span className="text-slate-400">Pass</span>
           </div>
           <div className="flex items-center space-x-1">
             <span className="w-2.5 h-2.5 rounded-sm bg-rose-500/90 shadow-[0_0_6px_#f43f5e]"></span>
@@ -92,7 +92,10 @@ export default function WaferMap({ onSelectDie }) {
                 key={die.id}
                 onMouseEnter={() => setHoveredDie(die)}
                 onMouseLeave={() => setHoveredDie(null)}
+                onFocus={() => setHoveredDie(die)}
+                onBlur={() => setHoveredDie(null)}
                 onClick={() => onSelectDie && onSelectDie(die)}
+                aria-label={`Die ${die.x}, ${die.y}: ${die.status}, example defect probability ${(die.defectProb * 100).toFixed(1)} percent`}
                 className={`w-full h-full rounded-[2px] transition-all duration-150 transform hover:scale-125 hover:z-20 ${bgColor} ${
                   isHovered ? 'ring-2 ring-white' : ''
                 }`}

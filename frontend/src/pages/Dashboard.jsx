@@ -26,10 +26,10 @@ export default function Dashboard({ liveTelemetry }) {
     return () => clearInterval(interval);
   }, []);
 
-  const yieldRate = fabData?.overall_yield_rate || 97.4;
-  const totalWafers = fabData?.total_wafers_processed || 3590;
-  const alarmCount = fabData?.active_alarms_count || 0;
-  const activeVersion = fabData?.active_model_version || 'v20261108_233353';
+  const yieldRate = fabData?.overall_yield_rate;
+  const totalWafers = fabData?.total_wafers_processed;
+  const alarmCount = fabData?.active_alarms_count;
+  const systemState = alarmCount == null ? 'UNAVAILABLE' : alarmCount > 0 ? 'ATTENTION' : 'NOMINAL';
 
   return (
     <div className="space-y-6">
@@ -37,13 +37,13 @@ export default function Dashboard({ liveTelemetry }) {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-800 gap-3">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-100 flex items-center space-x-2">
-            <span>Fab Operations & Anomaly Command</span>
-            <span className="text-xs font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">
-              OPERATIONAL
+            <span>Fab operations</span>
+            <span className={`state-badge state-${systemState.toLowerCase()}`}>
+              {systemState}
             </span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 font-mono mt-1">
-            Real-time semiconductor wafer telemetry streaming across fabrication chambers
+            Chamber telemetry, wafer yield, and sensor alerts
           </p>
         </div>
         <div className="flex items-center space-x-3">
@@ -61,37 +61,37 @@ export default function Dashboard({ liveTelemetry }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
           title="Yield Rate"
-          value={yieldRate}
+          value={yieldRate ?? '—'}
           unit="%"
-          change="+0.4% vs 24h baseline"
-          changeType="positive"
+          change={fabData ? 'Live overview' : 'Waiting for API'}
+          changeType={fabData ? 'positive' : 'neutral'}
           icon={CheckCircle2}
           description="Standard spec >= 95%"
         />
         <MetricCard
           title="Wafers Inspected"
-          value={totalWafers.toLocaleString()}
+          value={totalWafers?.toLocaleString() ?? '—'}
           unit="wafers"
-          change="3 Active Chambers"
+          change={fabData ? `${fabData.chambers?.length ?? 0} chambers` : 'Waiting for API'}
           changeType="neutral"
           icon={Cpu}
           description="CMP, Litho, Plasma Etch"
         />
         <MetricCard
           title="Defect Anomaly Rate"
-          value={(100 - yieldRate).toFixed(2)}
+          value={yieldRate == null ? '—' : (100 - yieldRate).toFixed(2)}
           unit="%"
           change="Clustered Ensemble"
-          changeType={yieldRate < 95 ? 'negative' : 'positive'}
+          changeType={yieldRate == null ? 'neutral' : yieldRate < 95 ? 'negative' : 'positive'}
           icon={Activity}
           description="Target < 5.0%"
         />
         <MetricCard
           title="Critical Sensor Alarms"
-          value={alarmCount}
+          value={alarmCount ?? '—'}
           unit="channels"
-          change={alarmCount === 0 ? 'Within spec' : 'Attention required'}
-          changeType={alarmCount === 0 ? 'positive' : 'negative'}
+          change={alarmCount == null ? 'Waiting for API' : alarmCount === 0 ? 'Within spec' : 'Review alerts'}
+          changeType={alarmCount == null ? 'neutral' : alarmCount === 0 ? 'positive' : 'negative'}
           icon={AlertTriangle}
           description="KS & PSI distribution drift"
         />
@@ -118,11 +118,7 @@ export default function Dashboard({ liveTelemetry }) {
             </div>
 
             <div className="mt-4 space-y-3">
-              {(fabData?.chambers || [
-                { chamber_id: 'Chamber_A', status: 'OPTIMAL', yield_rate: 98.4, active_recipe: 'CMP-Copper-P4', rf_power_kw: 13.56, pressure_mtorr: 15.1, temp_celsius: 64.8 },
-                { chamber_id: 'Chamber_B', status: 'OPTIMAL', yield_rate: 97.1, active_recipe: 'EUV-Litho-7nm', rf_power_kw: 13.58, pressure_mtorr: 14.9, temp_celsius: 65.2 },
-                { chamber_id: 'Chamber_C', status: 'OPTIMAL', yield_rate: 96.3, active_recipe: 'Plasma-Etch-CF4', rf_power_kw: 13.62, pressure_mtorr: 15.3, temp_celsius: 65.9 },
-              ]).map((ch) => (
+              {(fabData?.chambers || []).map((ch) => (
                 <div key={ch.chamber_id} className="p-3.5 rounded-lg bg-slate-900/70 border border-slate-800/80">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center space-x-2">
@@ -160,6 +156,8 @@ export default function Dashboard({ liveTelemetry }) {
                   </div>
                 </div>
               ))}
+              {!loading && !fabData && <p className="state-message" role="status">Fab overview is unavailable. Check the API connection and refresh.</p>}
+              {fabData?.chambers?.length === 0 && <p className="state-message">No chamber data is available.</p>}
             </div>
           </div>
 
