@@ -1,7 +1,7 @@
 # Core MLOps & Machine Learning
 scikit-learn>=1.4.0
 pandas>=2.0.0
-numpy>=1.24.0
+numpy>=2.2.6
 scipy>=1.11.0
 joblib>=1.3.0
 
