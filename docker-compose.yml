@@ -14,7 +14,7 @@ services:
       - ./Training_Batch_Files:/app/Training_Batch_Files
       - ./Prediction_Batch_files:/app/Prediction_Batch_files
     environment:
-      - DATABASE_URL=sqlite:////app/waferguard.db
+      - DATABASE_URL=sqlite:////app/waferpulse.db
     restart: unless-stopped
 
   frontend:

@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "waferguard-frontend",
+      "name": "waferpulse-frontend",
       "dependencies": {
         "lucide-react": "^1.16.0",
         "react": "^18.3.1",
