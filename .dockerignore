@@ -1,0 +1,43 @@
+# Version control
+.git/
+.gitignore
+.github/
+
+# Python caches and virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# Frontend caches & node_modules
+frontend/node_modules/
+frontend/dist/
+frontend/.bun/
+
+# Data, large files, batches
+artifacts/
+Training_Batch_Files/
+Prediction_Batch_files/
+waferpulse.db
+
+# Sensitive credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# OS files
+.DS_Store

@@ -1,0 +1,63 @@
+# syntax=docker/dockerfile:1.4
+# Default Dockerfile builds the production backend service
+FROM python:3.12-slim AS builder
+
+WORKDIR /app
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=ghcr.io/astral-sh/uv:0.6.5 /uv /bin/uv
+
+COPY requirements.txt setup.py ./
+RUN uv pip install --system --prefix=/install -r requirements.txt \
+    fastapi \
+    uvicorn \
+    scikit-learn \
+    pandas \
+    numpy \
+    joblib \
+    scipy \
+    pydantic \
+    sqlalchemy \
+    aiosqlite \
+    python-multipart \
+    websockets
+
+FROM python:3.12-slim AS runner
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONPATH=/app \
+    PORT=8000
+
+RUN groupadd -r waferpulse -g 1001 && \
+    useradd -r -u 1001 -g waferpulse -m -s /bin/bash waferpulse
+
+COPY --from=builder /install /usr/local
+COPY --chown=waferpulse:waferpulse . .
+
+RUN mkdir -p artifacts/models data reports Training_Batch_Files Prediction_Batch_files && \
+    chown -R waferpulse:waferpulse artifacts data reports Training_Batch_Files Prediction_Batch_files
+
+USER waferpulse
+
+EXPOSE 8000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+    CMD curl -f http://127.0.0.1:8000/health || exit 1
+
+CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
