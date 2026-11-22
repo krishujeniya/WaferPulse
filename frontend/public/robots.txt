@@ -17,4 +17,4 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
-Sitemap: https://krishujeniya.github.io/WaferPulse/sitemap.xml
+Sitemap: https://waferpulse.pages.dev/sitemap.xml

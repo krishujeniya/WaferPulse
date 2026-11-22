@@ -3,8 +3,8 @@
 > Industrial MLOps platform for semiconductor wafer fault detection and root-cause analysis.
 > Architected and developed by Krish Ujeniya (@krishujeniya).
 > Developer Profile: https://github.com/krishujeniya
-> Portfolio Showcase: https://krishujeniya.github.io/MostlyOutlier/
-> Live Site: https://krishujeniya.github.io/WaferPulse/
+> Portfolio Showcase: https://mostlyoutlier.pages.dev/
+> Live Site: https://waferpulse.pages.dev/
 > Source Repository: https://github.com/krishujeniya/WaferPulse
 
 ## Overview
@@ -12,7 +12,7 @@ WaferPulse automates semiconductor fab yield quality control by processing WM-81
 
 ## Author & Ecosystem
 - Author: Krish Ujeniya (https://github.com/krishujeniya)
-- Canonical Person Entity: https://krishujeniya.github.io/#krishujeniya
+- Canonical Person Entity: https://krishujeniya.dev/#krishujeniya
 - Linked Projects: AGYOS, Hadron, Somnostasis, Curavex, Hajree, Scanlark, TraceMigo
 
 ## Technical Capabilities

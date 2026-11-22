@@ -2,7 +2,7 @@
  * WaferPulse API Service Client.
  */
 
-const BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://waferpulse.vercel.app' : '');
+const BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://waferpulse-api.curavex.workers.dev' : '');
 
 export async function fetchHealth() {
   const res = await fetch(`${BASE_URL}/health`);
