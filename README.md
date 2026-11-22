@@ -5,13 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/krishujeniya/WaferPulse/actions/workflows/ci.yml"><img src="https://github.com/krishujeniya/WaferPulse/actions/workflows/ci.yml/badge.svg" alt="CI Status" /></a>
-  <a href="https://github.com/krishujeniya/WaferPulse/actions/workflows/deploy-pages.yml"><img src="https://github.com/krishujeniya/WaferPulse/actions/workflows/deploy-pages.yml/badge.svg" alt="Pages Deployment" /></a>
-  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white" alt="Python 3.12" /></a>
-  <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white" alt="FastAPI" /></a>
-  <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=black" alt="React 18" /></a>
-  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind-3.4-38B2AC?logo=tailwind-css&logoColor=white" alt="Tailwind CSS" /></a>
-  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT" /></a>
+  <a href="https://img.shields.io/badge/Cloudflare_Pages-Active-F38020?style=flat-square&logo=cloudflare" alt="License: MIT" /></a>
 </p>
 
 WaferPulse is an end-to-end MLOps platform engineered for semiconductor manufacturing fabrication plants (fabs). It ingests multi-channel sensor telemetry, validates data contracts against schema definitions, clusters operational chamber regimes using K-Means, trains specialized ensemble classifiers per chamber, detects distribution drift using Kolmogorov-Smirnov tests and Population Stability Index (PSI), and diagnoses wafer defects using Z-score anomaly attribution.
@@ -20,10 +14,10 @@ WaferPulse is an end-to-end MLOps platform engineered for semiconductor manufact
 
 ## Live Deployments
 
-- **Production Frontend Dashboard**: [https://krishujeniya.github.io/WaferPulse/](https://krishujeniya.github.io/WaferPulse/)
-- **Production Backend API**: [https://waferpulse.vercel.app](https://waferpulse.vercel.app)
-- **Interactive Swagger Documentation**: [https://waferpulse.vercel.app/docs](https://waferpulse.vercel.app/docs)
-- **API Health Endpoint**: [https://waferpulse.vercel.app/health](https://waferpulse.vercel.app/health)
+- **Production Frontend Dashboard**: [https://waferpulse.pages.dev](https://waferpulse.pages.dev)
+- **Production Backend API**: [https://waferpulse.pages.dev](https://waferpulse.pages.dev)
+- **Interactive Swagger Documentation**: [https://waferpulse.pages.dev/docs](https://waferpulse.pages.dev/docs)
+- **API Health Endpoint**: [https://waferpulse.pages.dev/health](https://waferpulse.pages.dev/health)
 
 ---
 

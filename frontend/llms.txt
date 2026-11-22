@@ -1,0 +1,22 @@
+# WaferPulse
+
+> Industrial MLOps platform for semiconductor wafer fault detection and root-cause analysis.
+> Architected and developed by Krish Ujeniya (@krishujeniya).
+> Developer Profile: https://github.com/krishujeniya
+> Portfolio Showcase: https://krishujeniya.github.io/MostlyOutlier/
+> Live Site: https://krishujeniya.github.io/WaferPulse/
+> Source Repository: https://github.com/krishujeniya/WaferPulse
+
+## Overview
+WaferPulse automates semiconductor fab yield quality control by processing WM-811K wafer maps through high-accuracy computer vision and spatial defect classification models. It detects failure signatures (Center, Donut, Edge-Loc, Edge-Ring, Loc, Random, Scratch, Near-full), clusters process chamber telemetry, and attributes root causes in real-time.
+
+## Author & Ecosystem
+- Author: Krish Ujeniya (https://github.com/krishujeniya)
+- Canonical Person Entity: https://krishujeniya.github.io/#krishujeniya
+- Linked Projects: AGYOS, Hadron, Somnostasis, Curavex, Hajree, Scanlark, TraceMigo
+
+## Technical Capabilities
+- Dataset & Preprocessing: WM-811K dataset (811,472 wafer maps) with Radon/W-transform and geometry filtering.
+- Deep Learning Architecture: ResNet-18 convolutional backbone + XGBoost tabular chamber telemetry classifier.
+- Root Cause Attribution: UMAP + HDBSCAN regime clustering isolating malfunctioning etch and deposition chambers.
+- Model Governance: Full artifact versioning, drift detection (KS test, PSI), and Prometheus metrics export.
