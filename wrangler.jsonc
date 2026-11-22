@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "waferpulse-web",
+  "name": "waferpulse",
   "compatibility_date": "2026-11-20",
   "pages_build_output_dir": "docs",
   "d1_databases": [
