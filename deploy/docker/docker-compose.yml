@@ -1,9 +1,13 @@
 services:
   backend:
     build:
-      context: .
-      dockerfile: Dockerfile.backend
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile.backend
     container_name: waferpulse_backend
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -24,9 +28,13 @@ services:
 
   frontend:
     build:
-      context: .
-      dockerfile: Dockerfile.frontend
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile.frontend
     container_name: waferpulse_frontend
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
     ports:
       - "3000:80"
