@@ -10,7 +10,7 @@ COPY frontend/ ./
 RUN bun run build
 
 # Stage 2: Serve static bundle with Nginx
-FROM nginx:1.27-alpine AS runner
+FROM nginx:1.29-alpine AS runner
 
 RUN apk add --no-cache curl
 
